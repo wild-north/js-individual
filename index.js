@@ -10,14 +10,11 @@
         const submitRequestButton = document.querySelector('#submit-request');
     
         submitRequestButton.addEventListener('click', function() {
-            showModal().then(function() {
-                fetch('./data.json')
-                    .then(readableStream => readableStream.json())
-                    .then(data => render(data));
-                hideModal();
-            }).catch(function() {
-                hideModal();
-            });
+            showModal()
+                .then(() => fetch('./data.json'))
+                .then(readableStream => readableStream.json())
+                .then(data => render(data))
+                .then(hideModal, hideModal);
         });
     }
 
@@ -45,6 +42,7 @@
         return promise;
     }
     function hideModal() {
+        console.log(123123123);
         const modal = document.querySelector('.modal');
         modal.style.display = '';
     }
