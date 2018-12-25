@@ -17,6 +17,33 @@
             color: #fff;
             cursor: pointer;
         }
+
+        .modal {
+            display: none;
+        }
+
+        .modal .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal .dialog {
+            padding: 30px;
+            display: inline-block;
+            width: 200px;
+            height: 100px;
+            background-color: #bbb;
+            border: 1px solid #000;
+            position: absolute;
+            left: 50%;
+            top:50%;
+            margin-left: -100px;
+            margin-top: -50px;
+        }
     </style>
 </head>
 <body>
@@ -25,6 +52,14 @@
     <button id="submit-request">Послать запрос!</button>
 
     <div class="content"></div>
+    <div class="modal">
+        <div class="overlay"></div>
+        <div class="dialog">
+            <p>Вы уверены?</p>
+            <button class="proceed" data-action="proceed">Да, продолжай</button>
+            <button class="cancel" data-action="cancel">Нет, стопэ!</button>
+        </div>
+    </div>
 
 </body>
 </html>
