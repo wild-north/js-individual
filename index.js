@@ -9,11 +9,31 @@
     function initUi(render) {
         const submitRequestButton = document.querySelector('#submit-request');
     
-        submitRequestButton.addEventListener('click', function() {
+        submitRequestButton.addEventListener('click', () => {
             showModal()
-                .then(() => fetch('./data.json'))
+                // .then(() => fetch('./data.json'))
                 .then(readableStream => readableStream.json())
                 .then(data => render(data))
+                .then(() => {
+                    var a = 10;
+                    var b = 20;
+                    
+                    console.log(1123123);
+
+                    if (a < b) {
+                        return Promise.resolve();
+                    } else {
+                        return Promise.reject();
+                    }
+                })
+                .then(
+                    function success() {
+                        console.log('success');
+                    },
+                    function error() {
+                        console.log('error');
+                    },
+                )
                 .then(hideModal, hideModal);
         });
     }
@@ -22,57 +42,27 @@
         const modal = document.querySelector('.modal');
         modal.style.display = 'block';
 
-        const promise = new Promise(function(resolve, reject) {
+        const promise = new Promise(function (resolve, reject) {
             modal.addEventListener('click', function(ev) {
                 if (ev.target.nodeName !== 'BUTTON') {
                     return;
                 }
     
                 const { action } = ev.target.dataset;
-                //const action = ev.target.dataset.action;
     
                 if (action === 'proceed') {
                     resolve();
                 } else {
                     reject();
                 }
-            });    
+            });
         });
 
         return promise;
     }
     function hideModal() {
-        console.log(123123123);
         const modal = document.querySelector('.modal');
         modal.style.display = '';
-    }
-
-    function initRequest() {
-        const xhr = new XMLHttpRequest();
-        
-        xhr.open('GET', './data.json');
-        xhr.timeout = 30000; // 30 sec
-    
-        xhr.onloadstart = function() {
-            console.log('запрос начат');
-        };
-        xhr.onprogress = function() {
-            console.log('браузер получил очередной пакет данных, можно прочитать текущие полученные данные в responseText');
-        };
-        xhr.abort = function() {
-            console.log('запрос был отменён вызовом xhr.abort()');
-        };
-        xhr.onerror = function() {
-            console.log('произошла ошибка');
-        };
-        xhr.ontimeout = function() {
-            console.warn('запрос был прекращён по таймауту');
-        };
-        xhr.onloadend = function() {
-            console.log('запрос был завершён (успешно или неуспешно)');
-        };
-    
-        return xhr;
     }
     
     function renderTable(data) {
@@ -121,26 +111,11 @@
     
             lastSortedBy = sortBy;
             isAscending = !isAscending;
-    
-            //tableHeading.removeEventListener('click', handleHeadingClick);
-    
+
             renderTable(sortedData);
         };
     
         tableHeading.addEventListener('click', handleHeadingClick);
-        
-        /*
-            Домашнее задание:
-                1 - реализовать сортировку для всех (!) колонок
-                2 - сортировка должна работать следующий образом
-                    2.1 - каждый первый клик вызывает сортировку
-                         в возрастающем порядке (ascending order)
-                    2.2 - каждый второй клик вызывает сортировку
-                         в убывающем порядке (descending order)
-                3 - Реализовать подход делегирования событий, 
-                    чтобы не плодить обработчики 
-                    событий для каждой колонки (например что, если колонок будет 150).
-        */
     }
     
     function customSort(dataArray, key, isAscending) {
